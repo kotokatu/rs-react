@@ -26,22 +26,28 @@ type OutputProps = {
 class Output extends Component<OutputProps> {
   render() {
     return (
-      <ul className="output-list">
-        {this.props.data.map((item) => {
-          return (
-            <li className="output-item" key={item.url}>
-              <h3>{item.name}</h3>
-              <ul>
-                <li>Birth year: {item.birth_year}</li>
-                <li>Gender: {item.gender}</li>
-                <li>Height: {item.height}</li>
-                <li>Eye color: {item.eye_color}</li>
-                <li>Hair color: {item.hair_color}</li>
-              </ul>
-            </li>
-          );
-        })}
-      </ul>
+      <div className="output">
+        {this.props.data.length ? (
+          <ul className="output-list">
+            {this.props.data.map((item) => {
+              return (
+                <li className="output-item" key={item.url}>
+                  <h3>{item.name}</h3>
+                  <ul>
+                    <li>Birth year: {item.birth_year}</li>
+                    <li>Gender: {item.gender}</li>
+                    <li>Height: {item.height}</li>
+                    <li>Eye color: {item.eye_color}</li>
+                    <li>Hair color: {item.hair_color}</li>
+                  </ul>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <div>Nothing found</div>
+        )}
+      </div>
     );
   }
 }
