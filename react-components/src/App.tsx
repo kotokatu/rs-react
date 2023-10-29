@@ -20,7 +20,8 @@ class App extends Component {
     try {
       this.setState({ isLoading: true });
       const res = await fetch(
-        `https://swapi.dev/api/people/?search=${this.state.searchValue}`
+        `https://swapi.dev/api/people/?search=${this.state.searchValue}&page=1
+        `
       );
       const data = await res.json();
       this.setState({ apiData: data.results, isLoading: false });
