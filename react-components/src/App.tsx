@@ -26,7 +26,9 @@ class App extends Component {
   };
 
   throwError = () => {
-    this.setState({ apiData: 'test' });
+    this.setState(() => {
+      throw new Error('This is a test error');
+    });
   };
 
   componentDidMount = () => {
