@@ -20,7 +20,7 @@ class App extends Component {
     try {
       this.setState({ isLoading: true });
       const res = await fetch(
-        `https://swapi.dev/api/people/?search=${this.state.searchValue}&page=1
+        `https://swapi.dev/api/people/?search=${this.state.searchValue.trim()}&page=1
         `
       );
       const data = await res.json();
@@ -37,14 +37,10 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    const storedSearchValue = localStorage.getItem(localStorageKey);
-    if (storedSearchValue) {
-      this.setState({ searchValue: storedSearchValue }, () =>
-        this.getSearchResults()
-      );
-    } else {
+    const storedSearchValue = localStorage.getItem(localStorageKey) ?? '';
+    this.setState({ searchValue: storedSearchValue }, () => {
       this.getSearchResults();
-    }
+    });
   };
   render() {
     return (

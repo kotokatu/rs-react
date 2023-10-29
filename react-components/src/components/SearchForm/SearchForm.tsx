@@ -10,7 +10,7 @@ type SearchFormProps = {
 
 class SearchForm extends Component<SearchFormProps> {
   handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    this.props.setValue(e.target.value.trim());
+    this.props.setValue(e.target.value);
   };
 
   handleSubmit = (e: FormEvent<HTMLFormElement>) => {
