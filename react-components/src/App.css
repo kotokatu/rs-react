@@ -45,6 +45,11 @@ h3 {
   margin: 10px 0;
   color: rgb(255, 140, 0);
 }
+
+:disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}
 .container {
   display: flex;
   gap: 20px;

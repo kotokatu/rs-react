@@ -7,7 +7,7 @@ export const localStorageKey = 'searchValue-kotokatu';
 
 class App extends Component {
   state = {
-    searchValue: localStorage.getItem(localStorageKey) || '',
+    searchValue: '',
     apiData: [],
     isLoading: false,
   };
@@ -37,7 +37,14 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    this.getSearchResults();
+    const storedSearchValue = localStorage.getItem(localStorageKey);
+    if (storedSearchValue) {
+      this.setState({ searchValue: storedSearchValue }, () =>
+        this.getSearchResults()
+      );
+    } else {
+      this.getSearchResults();
+    }
   };
   render() {
     return (
