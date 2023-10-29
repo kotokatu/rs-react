@@ -1,33 +1,58 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import './App.css';
+import { Component } from 'react';
+import SearchForm from './components/SearchForm/SearchForm';
+import Output from './components/Output/Output';
 
-function App() {
-  const [count, setCount] = useState(0);
+export const localStorageKey = 'searchValue-kotokatu';
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1></h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+class App extends Component {
+  state = {
+    searchValue: localStorage.getItem(localStorageKey) || '',
+    apiData: [],
+    isLoading: false,
+  };
+
+  setValue = (value: string) => {
+    this.setState({ searchValue: value });
+  };
+
+  getSearchResults = async () => {
+    this.setState({ isLoading: true });
+    const res = await fetch(
+      `https://swapi.dev/api/people/?search=${this.state.searchValue}`
+    );
+    const data = await res.json();
+    this.setState({ apiData: data.results, isLoading: false });
+  };
+
+  throwError = () => {
+    this.setState({ apiData: 'test' });
+  };
+
+  componentDidMount = () => {
+    this.getSearchResults();
+  };
+  render() {
+    return (
+      <div className="container">
+        <h1>Search Star Wars characters by name</h1>
+        <SearchForm
+          value={this.state.searchValue}
+          setValue={this.setValue}
+          searchItems={this.getSearchResults}
+          isLoading={this.state.isLoading}
+        />
+        {this.state.isLoading ? (
+          <div className="loader" />
+        ) : (
+          <Output data={this.state.apiData} />
+        )}
+        <button onClick={this.throwError} disabled={this.state.isLoading}>
+          Error
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs"></p>
-    </>
-  );
+    );
+  }
 }
 
 export default App;
