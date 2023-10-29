@@ -17,12 +17,16 @@ class App extends Component {
   };
 
   getSearchResults = async () => {
-    this.setState({ isLoading: true });
-    const res = await fetch(
-      `https://swapi.dev/api/people/?search=${this.state.searchValue}`
-    );
-    const data = await res.json();
-    this.setState({ apiData: data.results, isLoading: false });
+    try {
+      this.setState({ isLoading: true });
+      const res = await fetch(
+        `https://swapi.dev/api/people/?search=${this.state.searchValue}`
+      );
+      const data = await res.json();
+      this.setState({ apiData: data.results, isLoading: false });
+    } catch (error: unknown) {
+      console.log(error);
+    }
   };
 
   throwError = () => {
