@@ -1,4 +1,6 @@
-type Item = {
+import { Outlet, Link, useSearchParams } from 'react-router-dom';
+
+export type Item = {
   name: string;
   eye_color: string;
   gender: string;
@@ -6,15 +8,9 @@ type Item = {
   height: string;
   mass: string;
   skin_color: string;
-  homeworld: string;
-  films: string[];
-  species: string[];
-  starships: string[];
-  vehicles: string[];
   url: string;
-  created: string;
-  edited: string;
   birth_year: string;
+  id: string;
 };
 
 type SearchOutputProps = {
@@ -22,25 +18,27 @@ type SearchOutputProps = {
 };
 
 function SearchOutput({ data }: SearchOutputProps) {
+  const [searchParams] = useSearchParams();
+
   return (
     <div className="output">
       {data.length ? (
-        <ul className="output-list">
-          {data.map((item) => {
-            return (
-              <li className="output-item" key={item.url}>
-                <h3>{item.name}</h3>
-                <ul>
-                  <li>Birth year: {item.birth_year}</li>
-                  <li>Gender: {item.gender}</li>
-                  <li>Height: {item.height}</li>
-                  <li>Eye color: {item.eye_color}</li>
-                  <li>Hair color: {item.hair_color}</li>
-                </ul>
-              </li>
-            );
-          })}
-        </ul>
+        <>
+          <ul className="output-list">
+            {data.map((item) => {
+              return (
+                <li
+                  onClick={() => searchParams.set('details', item.id)}
+                  className="output-item"
+                  key={item.url}
+                >
+                  <Link to={`/?details=${item.id}`}>{item.name}</Link>
+                </li>
+              );
+            })}
+          </ul>
+          <Outlet />
+        </>
       ) : (
         <div>Nothing found</div>
       )}

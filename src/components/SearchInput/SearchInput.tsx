@@ -1,27 +1,28 @@
-import { ChangeEvent, FormEvent } from 'react';
-import { localStorageKey } from '../../App';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { localStorageKey } from '../Search/Search';
+import localStorageService from '../../service/LocalStorage';
 
 type SearchInputProps = {
-  value: string;
-  setValue: (value: string) => void;
-  searchItems: () => void;
+  searchValue: string;
+  setSearchValue: (value: string) => void;
   isLoading: boolean;
 };
 
 function SearchInput({
-  value,
-  setValue,
-  searchItems,
+  searchValue,
+  setSearchValue,
   isLoading,
 }: SearchInputProps) {
+  const [value, setValue] = useState(searchValue);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    searchItems();
-    localStorage.setItem(localStorageKey, value);
+    localStorageService.set(localStorageKey, value);
+    setSearchValue(value);
   };
 
   return (
