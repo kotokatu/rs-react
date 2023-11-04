@@ -1,68 +1,60 @@
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from 'react-router-dom';
 import './App.css';
-import { Component } from 'react';
-import SearchForm from './components/SearchForm/SearchForm';
-import Output from './components/Output/Output';
+import { useState } from 'react';
+import SearchInput from './components/SearchInput/SearchInput';
+import SearchOutput from './components/SearchOutput/SearchOutput';
+import localStorageService from './service/LocalStorage';
 
 export const localStorageKey = 'searchValue-kotokatu';
 
-class App extends Component {
-  state = {
-    searchValue: '',
-    apiData: [],
-    isLoading: false,
-  };
+function App() {
+  const [searchValue, setSearchValue] = useState(
+    () => localStorageService.get(localStorageKey) || ''
+  );
+  const [apiData, setApiData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  setValue = (value: string) => {
-    this.setState({ searchValue: value });
-  };
-
-  getSearchResults = async () => {
+  const getSearchResults = async () => {
     try {
-      this.setState({ isLoading: true });
+      setIsLoading(true);
       const res = await fetch(
-        `https://swapi.dev/api/people/?search=${this.state.searchValue.trim()}&page=1
+        `https://swapi.dev/api/people/?search=${searchValue.trim()}&page=1
         `
       );
       const data = await res.json();
-      this.setState({ apiData: data.results, isLoading: false });
+      setApiData(data.results);
+      setIsLoading(false);
     } catch (error: unknown) {
       console.log(error);
     }
   };
 
-  throwError = () => {
-    this.setState(() => {
-      throw new Error('This is a test error');
-    });
-  };
+  // const throwError = () => {
+  //   this.setState(() => {
+  //     throw new Error('This is a test error');
+  //   });
+  // };
 
-  componentDidMount = () => {
-    const storedSearchValue = localStorage.getItem(localStorageKey) ?? '';
-    this.setState({ searchValue: storedSearchValue }, () => {
-      this.getSearchResults();
-    });
-  };
-  render() {
-    return (
-      <div className="container">
-        <h1>Search Star Wars characters by name</h1>
-        <SearchForm
-          value={this.state.searchValue}
-          setValue={this.setValue}
-          searchItems={this.getSearchResults}
-          isLoading={this.state.isLoading}
-        />
-        {this.state.isLoading ? (
-          <div className="loader" />
-        ) : (
-          <Output data={this.state.apiData} />
-        )}
-        <button onClick={this.throwError} disabled={this.state.isLoading}>
-          Error
-        </button>
-      </div>
-    );
-  }
+  return (
+    <div className="container">
+      <h1>Search Star Wars characters by name</h1>
+      <SearchInput
+        value={searchValue}
+        setValue={setSearchValue}
+        searchItems={getSearchResults}
+        isLoading={isLoading}
+      />
+      {isLoading ? <div className="loader" /> : <SearchOutput data={apiData} />}
+      {/* <button onClick={throwError} disabled={this.state.isLoading}>
+        Error
+      </button> */}
+    </div>
+  );
 }
 
 export default App;
