@@ -27,12 +27,11 @@ export default function Search() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchValue, setSearchValue] = useState(storedSearchValue || '');
+  const [error, setError] = useState(false);
 
-  // const throwError = () => {
-  //   this.setState(() => {
-  //     throw new Error('This is a test error');
-  //   });
-  // };
+  const throwError = () => {
+    throw new Error('This is a test error');
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,7 +45,7 @@ export default function Search() {
         setSearchParams({ page: currentPage.toString() });
         setIsLoading(false);
       } catch (error: unknown) {
-        console.log(error);
+        setError(true);
       }
     };
     fetchData();
@@ -79,9 +78,10 @@ export default function Search() {
           Something went wrong. Please try again
         </div>
       )}
-      {/* <button onClick={throwError} disabled={this.state.isLoading}>
-    Error
-  </button> */}
+      <button onClick={() => setError(true)} disabled={isLoading}>
+        Error
+      </button>
+      {error && throwError()}
     </div>
   );
 }

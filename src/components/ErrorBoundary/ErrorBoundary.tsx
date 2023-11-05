@@ -1,26 +1,11 @@
-import { Component, ReactNode, ErrorInfo } from 'react';
+import { Component } from 'react';
 
-type ErrorBoundaryProps = {
-  children: ReactNode | ReactNode[];
-};
-
-class ErrorBoundary extends Component<ErrorBoundaryProps> {
-  state = { hasError: false };
-
-  componentDidCatch = (error: Error, errorInfo: ErrorInfo) => {
-    this.setState({
-      hasError: true,
-    });
-    console.log(error, errorInfo);
-  };
-
+class ErrorBoundary extends Component {
   render() {
-    return this.state.hasError ? (
+    return (
       <div className="error-container">
         An error has occured. Please try reloading the page.
       </div>
-    ) : (
-      <div>{this.props.children}</div>
     );
   }
 }
