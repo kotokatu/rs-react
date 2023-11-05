@@ -126,6 +126,10 @@ h3 {
   border: 2px solid rgb(194, 194, 194);
 }
 
+.detail-title {
+  color: rgb(255, 140, 0);
+}
+
 .details-button {
   position: absolute;
   top: 0;
