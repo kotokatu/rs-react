@@ -11,14 +11,12 @@ export default function OutputItem({ item }: OutputItemProps) {
   return (
     <li className="output-item">
       <span
-        className={`output-item-name ${
-          searchParams.get('details') === item.id.toString() ? 'active' : ''
+        className={`output-item-name${
+          searchParams.get('details') === item.id.toString() ? ' active' : ''
         }`}
         onClick={() => {
-          setSearchParams({
-            ...searchParams,
-            details: item.id.toString(),
-          });
+          searchParams.set('details', item.id.toString());
+          setSearchParams(searchParams);
         }}
       >
         {`${item.first_name} ${item.last_name}`}

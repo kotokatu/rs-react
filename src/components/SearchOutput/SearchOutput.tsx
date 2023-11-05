@@ -35,7 +35,7 @@ function SearchOutput({ data }: SearchOutputProps) {
         <>
           <ul
             className="output-list"
-            onClick={(e) => {
+            onClick={(e: React.MouseEvent<HTMLUListElement, MouseEvent>) => {
               if (
                 e.target instanceof HTMLElement &&
                 !e.target.classList.contains('output-item-name')
