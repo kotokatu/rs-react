@@ -2,35 +2,34 @@ import { useState, useEffect } from 'react';
 import SearchInput from '../SearchInput/SearchInput';
 import SearchOutput from '../SearchOutput/SearchOutput';
 import localStorageService from '../../service/LocalStorage';
-import type { Item } from '../SearchOutput/SearchOutput';
+import Loader from '../Loader/Loader';
 
 export const localStorageKey = 'searchValue-kotokatu';
 
 export default function Search() {
-  const storedSearchValue = localStorageService.get(localStorageKey);
-  const [searchValue, setSearchValue] = useState(storedSearchValue || '');
   const [apiData, setApiData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const storedSearchValue = localStorageService.get(localStorageKey);
 
   // const throwError = () => {
   //   this.setState(() => {
   //     throw new Error('This is a test error');
   //   });
   // };
-  const getSearchResults = async (searchValue: string) => {
+  const getSearchResults = async (
+    searchValue: string,
+    page: number = 1,
+    perPage: number = 15
+  ) => {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `https://swapi.dev/api/people/?search=${searchValue.trim()}
-        `
+        `https://www.balldontlie.io/api/v1/players/?search=${searchValue.trim()}&page=${
+          page - 1
+        }&per_page=${perPage}`
       );
       const data = await res.json();
-      setApiData(
-        data.results.map((item: Item) => ({
-          ...item,
-          id: item.url.match(/\/([^/]+)\/$/)?.[1],
-        }))
-      );
+      setApiData(data.data);
       setIsLoading(false);
     } catch (error: unknown) {
       console.log(error);
@@ -39,20 +38,20 @@ export default function Search() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getSearchResults(searchValue);
+      await getSearchResults(storedSearchValue || '');
     };
     fetchData();
-  }, [searchValue]);
+  }, [storedSearchValue]);
 
   return (
     <div className="container">
-      <h1>Search Star Wars characters by name</h1>
+      <h1>Search NBA players by name</h1>
       <SearchInput
-        setSearchValue={setSearchValue}
-        searchValue={searchValue}
+        search={getSearchResults}
+        searchValue={storedSearchValue || ''}
         isLoading={isLoading}
       />
-      {isLoading ? <div className="loader" /> : <SearchOutput data={apiData} />}
+      {isLoading ? <Loader /> : <SearchOutput data={apiData} />}
       {/* <button onClick={throwError} disabled={this.state.isLoading}>
     Error
   </button> */}

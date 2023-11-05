@@ -1,19 +1,17 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { localStorageKey } from '../Search/Search';
 import localStorageService from '../../service/LocalStorage';
+import { useNavigate } from 'react-router-dom';
 
 type SearchInputProps = {
   searchValue: string;
-  setSearchValue: (value: string) => void;
+  search: (value: string) => void;
   isLoading: boolean;
 };
 
-function SearchInput({
-  searchValue,
-  setSearchValue,
-  isLoading,
-}: SearchInputProps) {
+function SearchInput({ searchValue, search, isLoading }: SearchInputProps) {
   const [value, setValue] = useState(searchValue);
+  const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -22,7 +20,8 @@ function SearchInput({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     localStorageService.set(localStorageKey, value);
-    setSearchValue(value);
+    navigate('/');
+    search(value);
   };
 
   return (

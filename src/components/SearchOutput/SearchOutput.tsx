@@ -1,16 +1,24 @@
-import { Outlet, Link, useSearchParams } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
+import OutputItem from '../OutputItem';
+import { useState } from 'react';
 
 export type Item = {
-  name: string;
-  eye_color: string;
-  gender: string;
-  hair_color: string;
-  height: string;
-  mass: string;
-  skin_color: string;
-  url: string;
-  birth_year: string;
-  id: string;
+  id: number;
+  first_name: string;
+  height_feet: number | null;
+  height_inches: number | null;
+  weight_pounds: number | null;
+  last_name: string;
+  position: string;
+  team: {
+    id: number;
+    abbreviation: string;
+    city: string;
+    conference: string;
+    division: string;
+    full_name: string;
+    name: string;
+  };
 };
 
 type SearchOutputProps = {
@@ -18,29 +26,34 @@ type SearchOutputProps = {
 };
 
 function SearchOutput({ data }: SearchOutputProps) {
-  const [searchParams] = useSearchParams();
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   return (
     <div className="output">
       {data.length ? (
         <>
-          <ul className="output-list">
-            {data.map((item) => {
-              return (
-                <li
-                  onClick={() => searchParams.set('details', item.id)}
-                  className="output-item"
-                  key={item.url}
-                >
-                  <Link to={`/?details=${item.id}`}>{item.name}</Link>
-                </li>
-              );
+          <ul
+            className="output-list"
+            onClick={(e) => {
+              if (
+                e.target instanceof HTMLElement &&
+                !e.target.classList.contains('output-item-name')
+              ) {
+                setDetailsOpen(false);
+                searchParams.delete('details');
+                setSearchParams(searchParams);
+              }
+            }}
+          >
+            {data.map((item: Item) => {
+              return <OutputItem item={item} key={item.id} />;
             })}
           </ul>
-          <Outlet />
+          <Outlet context={[detailsOpen, setDetailsOpen]} />
         </>
       ) : (
-        <div>Nothing found</div>
+        <div className="output-empty">Nothing found</div>
       )}
     </div>
   );

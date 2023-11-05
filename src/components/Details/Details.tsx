@@ -1,48 +1,61 @@
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useOutletContext } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-
-type Data = {
-  name: string;
-  eye_color: string;
-  gender: string;
-  hair_color: string;
-  height: string;
-  mass: string;
-  skin_color: string;
-  homeworld: string;
-  films: string[];
-  species: string[];
-  starships: string[];
-  vehicles: string[];
-  url: string;
-  created: string;
-  edited: string;
-  birth_year: string;
-};
-
+import type { Item } from '../SearchOutput/SearchOutput';
+import Loader from '../Loader/Loader';
 function Details() {
-  const [searchParams] = useSearchParams();
-  const [data, setData] = useState<Data | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [data, setData] = useState<Item | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [detailsOpen, setDetailsOpen] =
+    useOutletContext<
+      [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+    >();
+
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setDetailsOpen(true);
       const res = await fetch(
-        `https://swapi.dev/api/people/${searchParams.get('details')}
+        `https://www.balldontlie.io/api/v1/players/${searchParams.get(
+          'details'
+        )}
         `
       );
       const data = await res.json();
       setData(data);
+      setLoading(false);
     };
     if (searchParams.get('details') !== null) fetchData();
-  }, [searchParams]);
+  }, [searchParams, setDetailsOpen]);
 
-  return data ? (
-    <ul>
-      <li>Birth year: {data.birth_year}</li>
-      <li>Gender: {data.gender}</li>
-      <li>Height: {data.height}</li>
-      <li>Eye color: {data.eye_color}</li>
-      <li>Hair color: {data.hair_color}</li>
-    </ul>
+  return loading ? (
+    <div className="details">
+      <Loader />
+    </div>
+  ) : detailsOpen && data ? (
+    <div className="details">
+      <ul className="details-list">
+        <h3>{`${data.first_name} ${data.last_name}`}</h3>
+        <li>Height (ft): {data.height_feet || 'n/a'}</li>
+        <li>Height (in): {data.height_inches || 'n/a'}</li>
+        <li>Weight (lbs): {data.weight_pounds || 'n/a'}</li>
+        <li>Team: {data.team.full_name}</li>
+        <li>Team abbreviation: {data.team.abbreviation}</li>
+        <li>City: {data.team.city}</li>
+        <li>Conference: {data.team.conference}</li>
+        <li>Division: {data.team.division}</li>
+      </ul>
+      <button
+        className="details-button"
+        onClick={() => {
+          setDetailsOpen(false);
+          searchParams.delete('details');
+          setSearchParams(searchParams);
+        }}
+      >
+        X
+      </button>
+    </div>
   ) : null;
 }
 
