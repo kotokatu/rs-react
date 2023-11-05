@@ -46,10 +46,15 @@ export default function Pagination({
           paginate(1);
         }}
       >
-        <option value="10">10</option>
-        <option value="15">15</option>
-        <option value="20">20</option>
-        <option value="25">25</option>
+        {[10, 15, 20, 25].map((value) => (
+          <option
+            className="pagination-select-option"
+            value={value}
+            key={value}
+          >
+            {value}
+          </option>
+        ))}
       </select>
     </div>
   );
