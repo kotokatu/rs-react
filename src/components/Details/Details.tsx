@@ -1,4 +1,4 @@
-import { useSearchParams, useOutletContext } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import type { Item } from '../SearchOutput/SearchOutput';
 import Loader from '../Loader/Loader';
@@ -6,26 +6,26 @@ function Details() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [data, setData] = useState<Item | null>(null);
   const [loading, setLoading] = useState(false);
-  const [detailsOpen, setDetailsOpen] =
-    useOutletContext<
-      [boolean, React.Dispatch<React.SetStateAction<boolean>>]
-    >();
+  // const [detailsOpen, setDetailsOpen] =
+  //   useOutletContext<
+  //     [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+  //   >();
+  const [detailsOpen, setDetailsOpen] = useState(false);
 
   useEffect(() => {
+    const query = searchParams.get('details');
+    setDetailsOpen(!!query);
     const fetchData = async () => {
       setLoading(true);
-      setDetailsOpen(true);
       const res = await fetch(
-        `https://www.balldontlie.io/api/v1/players/${searchParams.get(
-          'details'
-        )}
+        `https://www.balldontlie.io/api/v1/players/${query}
         `
       );
       const data = await res.json();
       setData(data);
       setLoading(false);
     };
-    if (searchParams.get('details') !== null) fetchData();
+    if (query) fetchData();
   }, [searchParams, setDetailsOpen]);
 
   return loading ? (

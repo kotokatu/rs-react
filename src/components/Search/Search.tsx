@@ -23,15 +23,27 @@ export default function Search() {
   const storedSearchValue = localStorageService.get(localStorageKey);
   const [apiData, setApiData] = useState<ApiResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [, setSearchParams] = useSearchParams();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchValue, setSearchValue] = useState(storedSearchValue || '');
   const [error, setError] = useState(false);
 
+  const pageNumber = searchParams.get('page');
+  const [currentPage, setCurrentPage] = useState(pageNumber ? +pageNumber : 1);
+
   const throwError = () => {
     throw new Error('This is a test error');
   };
+
+  useEffect(() => {
+    if (pageNumber) {
+      setCurrentPage(+pageNumber);
+    } else {
+      searchParams.set('page', '1');
+      setSearchParams(searchParams);
+    }
+  }, [searchParams, setSearchParams, pageNumber]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,10 +54,10 @@ export default function Search() {
         );
         const data = await res.json();
         setApiData(data);
-        setSearchParams({ page: currentPage.toString() });
-        setIsLoading(false);
       } catch (error: unknown) {
         setError(true);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -67,7 +79,7 @@ export default function Search() {
           <SearchOutput data={apiData.data} />
           <Pagination
             currentPage={currentPage}
-            paginate={setCurrentPage}
+            setPage={setCurrentPage}
             itemsPerPage={itemsPerPage}
             setItemsPerPage={setItemsPerPage}
             pageCount={apiData.meta.total_pages}

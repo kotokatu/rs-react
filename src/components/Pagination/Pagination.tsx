@@ -1,17 +1,24 @@
+import { useSearchParams } from 'react-router-dom';
+
 type PaginationProps = {
   currentPage: number;
   pageCount: number;
   itemsPerPage: number;
-  paginate: React.Dispatch<React.SetStateAction<number>>;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
   setItemsPerPage: React.Dispatch<React.SetStateAction<number>>;
 };
 export default function Pagination({
   currentPage,
   pageCount,
   itemsPerPage,
-  paginate,
+  setPage,
   setItemsPerPage,
 }: PaginationProps) {
+  const [, setSearchParams] = useSearchParams();
+  const paginate = (page: number) => {
+    setPage(page);
+    setSearchParams({ page: page.toString() });
+  };
   return (
     <div className="pagination">
       <button disabled={currentPage === 1} onClick={() => paginate(1)}>
