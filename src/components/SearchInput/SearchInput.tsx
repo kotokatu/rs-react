@@ -1,20 +1,15 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState, useContext } from 'react';
 import { localStorageKey } from '../Search/Search';
 import localStorageService from '../../service/LocalStorage';
+import SearchContext from '../../context/SearchContext';
 
 type SearchInputProps = {
-  searchValue: string;
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  search: (value: string) => void;
   isLoading: boolean;
 };
 
-function SearchInput({
-  searchValue,
-  setSearchValue,
-  setCurrentPage,
-  isLoading,
-}: SearchInputProps) {
+function SearchInput({ search, isLoading }: SearchInputProps) {
+  const searchValue = useContext(SearchContext);
   const [value, setValue] = useState(searchValue);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,8 +19,7 @@ function SearchInput({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     localStorageService.set(localStorageKey, value);
-    setCurrentPage(1);
-    setSearchValue(value);
+    search(value);
   };
 
   return (
