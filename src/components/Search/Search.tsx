@@ -8,6 +8,8 @@ import Pagination from '../Pagination/Pagination';
 import DataContext from '../../context/DataContext';
 import SearchContext from '../../context/SearchContext';
 
+const BASE_URL = 'https://www.balldontlie.io/api/v1/players/';
+
 export const localStorageKey = 'searchValue-kotokatu';
 export type ApiResponse = {
   data: Item[];
@@ -70,7 +72,7 @@ export default function Search() {
       try {
         setIsLoading(true);
         const res = await fetch(
-          `https://www.balldontlie.io/api/v1/players/?search=${searchValue.trim()}&page=${currentPage}&per_page=${itemsPerPage}`
+          `${BASE_URL}?search=${searchValue.trim()}&page=${currentPage}&per_page=${itemsPerPage}`
         );
         const data = await res.json();
         setApiData(data);

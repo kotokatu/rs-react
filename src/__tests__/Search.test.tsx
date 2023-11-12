@@ -27,5 +27,6 @@ test('Verify that clicking the Search button saves the entered value to the loca
   await userEvent.click(button);
   await waitFor(async () => {
     expect(localStorage.getItem(localStorageKey)).toEqual('1234');
+    expect(localStorage.getItem(localStorageKey)).not.toEqual('5678');
   });
 });
