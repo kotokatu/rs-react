@@ -6,10 +6,7 @@ export const handlers = [
     await delay(100);
     return HttpResponse.json(mockApiData!.data[1]);
   }),
-  http.get(
-    'https://www.balldontlie.io/api/v1/players/?search=&page=1&per_page=10',
-    async () => {
-      return HttpResponse.json(mockApiData);
-    }
-  ),
+  http.get('https://www.balldontlie.io/api/v1/players/', async () => {
+    return HttpResponse.json(mockApiData);
+  }),
 ];
