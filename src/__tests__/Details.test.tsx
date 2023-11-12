@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import mockApiData from './_mockData';
+import mockApiData from './mocks/mockData';
 import { MemoryRouter } from 'react-router-dom';
 import DataContext from '../context/DataContext';
 import SearchOutput from '../components/SearchOutput/SearchOutput';

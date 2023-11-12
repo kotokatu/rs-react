@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
 import SearchOutput from '../components/SearchOutput/SearchOutput';
 import DataContext from '../context/DataContext';
-import mockApiData from './_mockData';
+import mockApiData from './mocks/mockData';
 import { MemoryRouter } from 'react-router-dom';
 import { ApiResponse } from '../components/Search/Search';
 

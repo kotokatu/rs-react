@@ -1,4 +1,4 @@
-import type { ApiResponse } from '../components/Search/Search';
+import type { ApiResponse } from '../../components/Search/Search';
 const mockApiData: ApiResponse = {
   data: [
     {
