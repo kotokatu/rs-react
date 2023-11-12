@@ -26,12 +26,13 @@ function SearchInput({ search, isLoading }: SearchInputProps) {
     <form className="form-search" onSubmit={handleSubmit}>
       <input
         className="input-search"
+        data-testid="input-search"
         type="text"
         value={value}
         onChange={handleChange}
         disabled={isLoading}
       />
-      <button type="submit" disabled={isLoading}>
+      <button type="submit" data-testid="button-search" disabled={isLoading}>
         Search
       </button>
     </form>

@@ -33,6 +33,7 @@ export default function Pagination({
       </button>
       <div>{currentPage}</div>
       <button
+        data-testid="button-next"
         disabled={currentPage === pages.meta.total_pages}
         onClick={() => paginate(currentPage + 1)}
       >
