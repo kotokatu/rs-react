@@ -22,6 +22,5 @@ test('the component updates URL query parameter when page changes', async () => 
   );
   const nextPageButton = screen.getByTestId('button-next');
   await user.click(nextPageButton);
-  screen.debug();
   await waitFor(() => expect(window.location.search).toContain('page=2'));
 });
