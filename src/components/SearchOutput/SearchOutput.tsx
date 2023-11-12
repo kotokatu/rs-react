@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import OutputItem from '../OutputItem/OutputItem';
 import { useContext } from 'react';
 import DataContext from '../../context/DataContext';

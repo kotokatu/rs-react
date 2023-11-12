@@ -17,8 +17,7 @@ function Details({ openDetails }: DetailsProps) {
     const fetchData = async () => {
       setLoading(true);
       const res = await fetch(
-        `https://www.balldontlie.io/api/v1/players/${query}
-        `
+        `https://www.balldontlie.io/api/v1/players/${query}`
       );
       const data = await res.json();
       setData(data);
@@ -68,6 +67,7 @@ function Details({ openDetails }: DetailsProps) {
           </ul>
           <button
             className="details-button"
+            data-testid="details-button"
             onClick={() => {
               openDetails(false);
               searchParams.delete('details');
