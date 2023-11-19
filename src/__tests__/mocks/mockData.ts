@@ -1,5 +1,6 @@
-import type { ApiResponse } from '../../components/Search/Search';
-const mockApiData: ApiResponse = {
+import type { ApiResponse } from '../../features/api/apiSlice';
+
+export const mockApiData: ApiResponse = {
   data: [
     {
       id: 1,
@@ -65,4 +66,13 @@ const mockApiData: ApiResponse = {
   },
 };
 
-export default mockApiData;
+export const emptyApiData: ApiResponse = {
+  data: [],
+  meta: {
+    total_pages: 0,
+    current_page: 1,
+    next_page: null,
+    per_page: 10,
+    total_count: 0,
+  },
+};

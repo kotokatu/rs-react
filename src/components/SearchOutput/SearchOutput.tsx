@@ -1,33 +1,29 @@
-import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/hooks';
+import { useGetItemsQuery } from '../../features/api/apiSlice';
 import OutputItem from '../OutputItem/OutputItem';
-import { useContext } from 'react';
-import DataContext from '../../context/DataContext';
-import { ApiResponse } from '../Search/Search';
 import Details from '../Details/Details';
-import type { Item } from '../Search/Search';
-
+import type { Item } from '../../features/api/apiSlice';
 function SearchOutput() {
   const [searchParams] = useSearchParams();
-  const apiData = useContext<ApiResponse>(DataContext);
-  const [detailsOpen, setDetailsOpen] = useState(!!searchParams.get('details'));
+  const { searchValue, page, perPage } = useAppSelector((state) => state.main);
+
+  const { data } = useGetItemsQuery({
+    searchValue,
+    page,
+    perPage,
+  });
 
   return (
     <div className="output">
-      {apiData?.data && apiData.data.length ? (
+      {data?.data && data.data.length ? (
         <>
           <ul className="output-list">
-            {apiData.data.map((item: Item) => {
-              return (
-                <OutputItem
-                  item={item}
-                  key={item.id}
-                  openDetails={() => setDetailsOpen(true)}
-                />
-              );
+            {data.data.map((item: Item) => {
+              return <OutputItem item={item} key={item.id} />;
             })}
           </ul>
-          {detailsOpen && <Details openDetails={setDetailsOpen} />}
+          {!!searchParams.get('details') && <Details />}
         </>
       ) : (
         <div className="output-empty">Nothing found</div>
