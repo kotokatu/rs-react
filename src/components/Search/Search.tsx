@@ -30,7 +30,6 @@ export default function Search() {
 
   useEffect(() => {
     const storedSearchValue = localStorageService.get(localStorageKey);
-    console.log(storedSearchValue);
     if (storedSearchValue) dispatch(updateSearchValue(storedSearchValue));
   }, [dispatch]);
 

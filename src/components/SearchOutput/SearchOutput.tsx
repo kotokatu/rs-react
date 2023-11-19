@@ -16,7 +16,7 @@ function SearchOutput() {
 
   return (
     <div className="output">
-      {data?.data && data.data.length ? (
+      {data?.data.length ? (
         <>
           <ul className="output-list">
             {data.data.map((item: Item) => {

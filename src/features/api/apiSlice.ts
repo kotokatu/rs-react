@@ -52,7 +52,7 @@ export const apiSlice = createApi({
           },
         };
       },
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_args, { dispatch, queryFulfilled }) {
         dispatch(setMainLoading(true));
         await queryFulfilled;
         dispatch(setMainLoading(false));
