@@ -10,6 +10,7 @@ test('the component updates URL query parameter when page changes', async () => 
       main: { searchValue: '', page: 1, perPage: 1, mainLoading: false },
     },
   });
+  expect(location.search).toContain('page=1');
   const nextPageButton = await screen.findByTestId('button-next');
   await user.click(nextPageButton);
   expect(location.search).toContain('page=2');

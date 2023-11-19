@@ -9,9 +9,7 @@ const user = userEvent.setup();
 test('Ensures that the card component renders the relevant card data', async () => {
   renderWithProviders(<App />);
   const items = await screen.findAllByRole('listitem');
-  expect(items[0].innerHTML).toBe(
-    '<span class="output-item-name">LeBron James</span>'
-  );
+  expect(items[0].textContent).toBe('LeBron James');
 });
 
 test('Validates that clicking on a card opens a detailed card component', async () => {

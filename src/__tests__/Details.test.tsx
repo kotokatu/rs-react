@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from './test-utils';
 import App from '../App';
@@ -7,7 +7,8 @@ test('Tests if a loading indicator is displayed while fetching data', async () =
   const user = userEvent.setup();
   renderWithProviders(<App />);
   await user.click(await screen.findByText('Stephen Curry'));
-  expect(await screen.findByTestId('loader')).toBeInTheDocument();
+  const { getByTestId } = within(await screen.findByTestId('details'));
+  expect(getByTestId('loader')).toBeInTheDocument();
 });
 
 test('Tests if the card details component correctly displays the detailed card data', async () => {
