@@ -1,4 +1,4 @@
-import { screen, within, waitFor } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import { HttpResponse, http } from 'msw';
 import { server } from './mocks/server';
 import { emptyApiData, mockApiData } from './mocks/mockData';
@@ -7,13 +7,11 @@ import { renderWithProviders } from './test-utils';
 
 test('SearchOutput renders the correct number of items', async () => {
   renderWithProviders(<App />);
-  await waitFor(() => {
-    const testValue = mockApiData.data.length;
-    const list = screen.getByRole('list', {});
-    const { getAllByRole } = within(list);
-    const items = getAllByRole('listitem');
-    expect(items.length).toBe(testValue);
-  });
+  const testValue = mockApiData.data.length;
+  const list = await screen.findByRole('list', {});
+  const { getAllByRole } = within(list);
+  const items = getAllByRole('listitem');
+  expect(items.length).toBe(testValue);
 });
 
 test('SearchOutput renders "Nothing found" message if no are items found', async () => {
@@ -23,8 +21,6 @@ test('SearchOutput renders "Nothing found" message if no are items found', async
     })
   );
   renderWithProviders(<App />);
-  await waitFor(() => {
-    const message = screen.getByText(/Nothing found/i);
-    expect(message).toBeInTheDocument();
-  });
+  const message = await screen.findByText(/Nothing found/i);
+  expect(message).toBeInTheDocument();
 });
