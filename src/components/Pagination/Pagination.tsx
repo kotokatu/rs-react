@@ -1,25 +1,26 @@
 import { useSearchParams } from 'react-router-dom';
+import DataContext from '../../context/DataContext';
+import { useContext } from 'react';
 
 type PaginationProps = {
   currentPage: number;
-  pageCount: number;
   itemsPerPage: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   setItemsPerPage: React.Dispatch<React.SetStateAction<number>>;
 };
 export default function Pagination({
   currentPage,
-  pageCount,
   itemsPerPage,
   setPage,
   setItemsPerPage,
 }: PaginationProps) {
+  const pages = useContext(DataContext);
   const [, setSearchParams] = useSearchParams();
   const paginate = (page: number) => {
     setPage(page);
     setSearchParams({ page: page.toString() });
   };
-  return (
+  return pages?.meta.total_pages ? (
     <div className="pagination">
       <button disabled={currentPage === 1} onClick={() => paginate(1)}>
         &lt;&lt;
@@ -32,14 +33,15 @@ export default function Pagination({
       </button>
       <div>{currentPage}</div>
       <button
-        disabled={currentPage === pageCount}
+        data-testid="button-next"
+        disabled={currentPage === pages.meta.total_pages}
         onClick={() => paginate(currentPage + 1)}
       >
         &gt;
       </button>
       <button
-        disabled={currentPage === pageCount}
-        onClick={() => paginate(pageCount)}
+        disabled={currentPage === pages?.meta.total_pages}
+        onClick={() => paginate(pages.meta.total_pages)}
       >
         &gt;&gt;
       </button>
@@ -64,5 +66,5 @@ export default function Pagination({
         ))}
       </select>
     </div>
-  );
+  ) : null;
 }

@@ -1,11 +1,12 @@
-import { Item } from './SearchOutput/SearchOutput';
+import type { Item } from '../Search/Search';
 import { useSearchParams } from 'react-router-dom';
 
 type OutputItemProps = {
   item: Item;
+  openDetails: () => void;
 };
 
-export default function OutputItem({ item }: OutputItemProps) {
+export default function OutputItem({ item, openDetails }: OutputItemProps) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   return (
@@ -15,6 +16,7 @@ export default function OutputItem({ item }: OutputItemProps) {
           searchParams.get('details') === item.id.toString() ? ' active' : ''
         }`}
         onClick={() => {
+          openDetails();
           searchParams.set('details', item.id.toString());
           setSearchParams(searchParams);
         }}
