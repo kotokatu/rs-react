@@ -1,12 +1,11 @@
-import type { Item } from '../Search/Search';
 import { useSearchParams } from 'react-router-dom';
+import type { Item } from '../../features/api/apiSlice';
 
 type OutputItemProps = {
   item: Item;
-  openDetails: () => void;
 };
 
-export default function OutputItem({ item, openDetails }: OutputItemProps) {
+export default function OutputItem({ item }: OutputItemProps) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   return (
@@ -16,7 +15,6 @@ export default function OutputItem({ item, openDetails }: OutputItemProps) {
           searchParams.get('details') === item.id.toString() ? ' active' : ''
         }`}
         onClick={() => {
-          openDetails();
           searchParams.set('details', item.id.toString());
           setSearchParams(searchParams);
         }}

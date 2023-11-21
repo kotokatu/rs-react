@@ -1,34 +1,23 @@
 import { useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import type { Item } from '../Search/Search';
+import { useAppSelector } from '../../hooks/hooks';
+import { useGetItemQuery } from '../../features/api/apiSlice';
 import Loader from '../Loader/Loader';
+import { useEffect, useState } from 'react';
 
-type DetailsProps = {
-  openDetails: React.Dispatch<React.SetStateAction<boolean>>;
-};
-function Details({ openDetails }: DetailsProps) {
+function Details() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [data, setData] = useState<Item | null>(null);
-  const [loading, setLoading] = useState(false);
+  const id = searchParams.get('details') as string;
+  const [skip, setSkip] = useState(true);
+  const { detailsLoading } = useAppSelector((state) => state.details);
+  const { data } = useGetItemQuery(id, { skip });
 
   useEffect(() => {
-    const query = searchParams.get('details');
-    openDetails(!!query);
-    const fetchData = async () => {
-      setLoading(true);
-      const res = await fetch(
-        `https://www.balldontlie.io/api/v1/players/${query}`
-      );
-      const data = await res.json();
-      setData(data);
-      setLoading(false);
-    };
-    if (query) fetchData();
-  }, [searchParams, openDetails]);
+    if (id) setSkip(false);
+  }, [id]);
 
   return (
     <div className="details" data-testid="details">
-      {loading ? (
+      {detailsLoading ? (
         <Loader />
       ) : data ? (
         <>
@@ -69,7 +58,6 @@ function Details({ openDetails }: DetailsProps) {
             className="details-button"
             data-testid="details-button"
             onClick={() => {
-              openDetails(false);
               searchParams.delete('details');
               setSearchParams(searchParams);
             }}

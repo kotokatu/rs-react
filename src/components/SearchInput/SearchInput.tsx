@@ -1,16 +1,19 @@
-import { ChangeEvent, FormEvent, useState, useContext } from 'react';
-import { localStorageKey } from '../Search/Search';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { updateSearchValue, setPage } from '../../features/main/mainSlice';
 import localStorageService from '../../service/LocalStorage';
-import SearchContext from '../../context/SearchContext';
+import { localStorageKey } from '../../constants/constants';
+import { useSearchParams } from 'react-router-dom';
 
-type SearchInputProps = {
-  search: (value: string) => void;
-  isLoading: boolean;
-};
+function SearchInput() {
+  const dispatch = useAppDispatch();
+  const { searchValue, mainLoading } = useAppSelector((state) => state.main);
+  const [value, setValue] = useState('');
+  const [, setSearchParams] = useSearchParams();
 
-function SearchInput({ search, isLoading }: SearchInputProps) {
-  const searchValue = useContext(SearchContext);
-  const [value, setValue] = useState(searchValue);
+  useEffect(() => {
+    setValue(searchValue);
+  }, [searchValue]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -19,7 +22,9 @@ function SearchInput({ search, isLoading }: SearchInputProps) {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     localStorageService.set(localStorageKey, value);
-    search(value);
+    dispatch(updateSearchValue(value));
+    dispatch(setPage(1));
+    setSearchParams({ page: '1' });
   };
 
   return (
@@ -30,9 +35,9 @@ function SearchInput({ search, isLoading }: SearchInputProps) {
         type="text"
         value={value}
         onChange={handleChange}
-        disabled={isLoading}
+        disabled={mainLoading}
       />
-      <button type="submit" data-testid="button-search" disabled={isLoading}>
+      <button type="submit" data-testid="button-search" disabled={mainLoading}>
         Search
       </button>
     </form>

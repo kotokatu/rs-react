@@ -1,58 +1,27 @@
 import { vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import OutputItem from '../components/OutputItem/OutputItem';
-import mockApiData from './mocks/mockData';
-import { MemoryRouter } from 'react-router-dom';
-import DataContext from '../context/DataContext';
-import SearchOutput from '../components/SearchOutput/SearchOutput';
+import { renderWithProviders } from './test-utils';
+import App from '../App';
 
-describe('Card', () => {
-  it('Ensures that the card component renders the relevant card data', () => {
-    render(
-      <MemoryRouter>
-        <OutputItem item={mockApiData!.data[0]} openDetails={vi.fn()} />
-      </MemoryRouter>
-    );
-    const item = screen.getByRole('listitem');
-    expect(item).toBeInTheDocument();
-    expect(item).toContainHTML(
-      '<span class="output-item-name">LeBron James</span>'
-    );
-  });
+const user = userEvent.setup();
 
-  it('Validates that clicking on a card opens a detailed card component', async () => {
-    const user = userEvent.setup();
-    render(
-      <MemoryRouter>
-        <DataContext.Provider value={mockApiData}>
-          <SearchOutput />
-        </DataContext.Provider>
-      </MemoryRouter>
-    );
-    await user.click(screen.getByText('Stephen Curry'));
-    await waitFor(async () => {
-      const detailsComponent = screen.getByTestId('details');
-      expect(detailsComponent).toBeInTheDocument();
-    });
-  });
+test('Ensures that the card component renders the relevant card data', async () => {
+  renderWithProviders(<App />);
+  const items = await screen.findAllByRole('listitem');
+  expect(items[0].textContent).toBe('LeBron James');
+});
 
-  it('Triggers API call to fetch detailed information when clicked', async () => {
-    const user = userEvent.setup();
-    vi.spyOn(global, 'fetch');
-    render(
-      <MemoryRouter>
-        <DataContext.Provider value={mockApiData}>
-          <SearchOutput />
-        </DataContext.Provider>
-      </MemoryRouter>
-    );
-    await user.click(screen.getByText('Stephen Curry'));
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalled();
-      expect(global.fetch).toHaveBeenCalledWith(
-        'https://www.balldontlie.io/api/v1/players/2'
-      );
-    });
-  });
+test('Validates that clicking on a card opens a detailed card component', async () => {
+  renderWithProviders(<App />);
+  await user.click(await screen.findByText('Stephen Curry'));
+  const detailsComponent = await screen.findByTestId('details');
+  expect(detailsComponent).toBeInTheDocument();
+});
+
+test('Triggers API call to fetch detailed information when clicked', async () => {
+  vi.spyOn(global, 'fetch');
+  renderWithProviders(<App />);
+  await user.click(await screen.findByText('Stephen Curry'));
+  expect(global.fetch).toHaveBeenCalled();
 });

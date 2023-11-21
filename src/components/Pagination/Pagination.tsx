@@ -1,47 +1,42 @@
 import { useSearchParams } from 'react-router-dom';
-import DataContext from '../../context/DataContext';
-import { useContext } from 'react';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { setPage, setPerPage } from '../../features/main/mainSlice';
+import { useGetItemsQuery } from '../../features/api/apiSlice';
 
-type PaginationProps = {
-  currentPage: number;
-  itemsPerPage: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
-  setItemsPerPage: React.Dispatch<React.SetStateAction<number>>;
-};
-export default function Pagination({
-  currentPage,
-  itemsPerPage,
-  setPage,
-  setItemsPerPage,
-}: PaginationProps) {
-  const pages = useContext(DataContext);
+export default function Pagination() {
+  const { searchValue, page, perPage } = useAppSelector((state) => state.main);
+  const { data } = useGetItemsQuery({
+    searchValue,
+    page,
+    perPage,
+  });
+  const dispatch = useAppDispatch();
   const [, setSearchParams] = useSearchParams();
+
   const paginate = (page: number) => {
-    setPage(page);
+    dispatch(setPage(page));
     setSearchParams({ page: page.toString() });
   };
-  return pages?.meta.total_pages ? (
+
+  return data?.meta.total_pages ? (
     <div className="pagination">
-      <button disabled={currentPage === 1} onClick={() => paginate(1)}>
+      <button disabled={page === 1} onClick={() => paginate(1)}>
         &lt;&lt;
       </button>
-      <button
-        disabled={currentPage === 1}
-        onClick={() => paginate(currentPage - 1)}
-      >
+      <button disabled={page === 1} onClick={() => paginate(page - 1)}>
         &lt;
       </button>
-      <div>{currentPage}</div>
+      <div>{page}</div>
       <button
         data-testid="button-next"
-        disabled={currentPage === pages.meta.total_pages}
-        onClick={() => paginate(currentPage + 1)}
+        disabled={page === data.meta.total_pages}
+        onClick={() => paginate(page + 1)}
       >
         &gt;
       </button>
       <button
-        disabled={currentPage === pages?.meta.total_pages}
-        onClick={() => paginate(pages.meta.total_pages)}
+        disabled={page === data?.meta.total_pages}
+        onClick={() => paginate(data.meta.total_pages)}
       >
         &gt;&gt;
       </button>
@@ -49,9 +44,9 @@ export default function Pagination({
         className="pagination-select"
         name="page-select"
         id="page-select"
-        value={itemsPerPage}
+        value={perPage}
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-          setItemsPerPage(+e.target.value);
+          dispatch(setPerPage(+e.target.value));
           paginate(1);
         }}
       >

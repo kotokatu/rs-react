@@ -1,67 +1,42 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import mockApiData from './mocks/mockData';
-import { MemoryRouter } from 'react-router-dom';
-import DataContext from '../context/DataContext';
-import SearchOutput from '../components/SearchOutput/SearchOutput';
+import { renderWithProviders } from './test-utils';
+import App from '../App';
 
-describe('Details', () => {
-  it('Tests if a loading indicator is displayed while fetching data', async () => {
-    const user = userEvent.setup();
-    render(
-      <MemoryRouter>
-        <DataContext.Provider value={mockApiData}>
-          <SearchOutput />
-        </DataContext.Provider>
-      </MemoryRouter>
-    );
-    await user.click(screen.getByText('Stephen Curry'));
-    expect(screen.getByTestId('loader')).toBeInTheDocument();
-  });
+test('Tests if a loading indicator is displayed while fetching data', async () => {
+  const user = userEvent.setup();
+  renderWithProviders(<App />);
+  await user.click(await screen.findByText('Stephen Curry'));
+  const { getByTestId } = within(await screen.findByTestId('details'));
+  expect(getByTestId('loader')).toBeInTheDocument();
+});
 
-  it('Tests if the card details component correctly displays the detailed card data', async () => {
-    const user = userEvent.setup();
-    render(
-      <MemoryRouter>
-        <DataContext.Provider value={mockApiData}>
-          <SearchOutput />
-        </DataContext.Provider>
-      </MemoryRouter>
-    );
-    await user.click(screen.getByText('Stephen Curry'));
-    await waitFor(() => {
-      expect(screen.getByText('Height (ft):')).toBeInTheDocument();
-      expect(screen.getByText('6')).toBeInTheDocument();
-      expect(screen.getByText('Height (in):')).toBeInTheDocument();
-      expect(screen.getByText('3')).toBeInTheDocument();
-      expect(screen.getByText('Weight (lbs):')).toBeInTheDocument();
-      expect(screen.getByText('185')).toBeInTheDocument();
-      expect(screen.getByText('Team:')).toBeInTheDocument();
-      expect(screen.getByText('Golden State Warriors')).toBeInTheDocument();
-      expect(screen.getByText('Team abbreviation:')).toBeInTheDocument();
-      expect(screen.getByText('GSW')).toBeInTheDocument();
-      expect(screen.getByText('City:')).toBeInTheDocument();
-      expect(screen.getByText('Conference:')).toBeInTheDocument();
-      expect(screen.getByText('West')).toBeInTheDocument();
-      expect(screen.getByText('Division:')).toBeInTheDocument();
-      expect(screen.getByText('Pacific')).toBeInTheDocument();
-    });
-  });
+test('Tests if the card details component correctly displays the detailed card data', async () => {
+  const user = userEvent.setup();
+  renderWithProviders(<App />);
+  await user.click(await screen.findByText('Stephen Curry'));
+  expect(await screen.findByText('Height (ft):')).toBeInTheDocument();
+  expect(await screen.findByText('6')).toBeInTheDocument();
+  expect(await screen.findByText('Height (in):')).toBeInTheDocument();
+  expect(await screen.findByText('3')).toBeInTheDocument();
+  expect(await screen.findByText('Weight (lbs):')).toBeInTheDocument();
+  expect(await screen.findByText('185')).toBeInTheDocument();
+  expect(await screen.findByText('Team:')).toBeInTheDocument();
+  expect(await screen.findByText('Golden State Warriors')).toBeInTheDocument();
+  expect(await screen.findByText('Team abbreviation:')).toBeInTheDocument();
+  expect(await screen.findByText('GSW')).toBeInTheDocument();
+  expect(await screen.findByText('City:')).toBeInTheDocument();
+  expect(await screen.findByText('Conference:')).toBeInTheDocument();
+  expect(await screen.findByText('West')).toBeInTheDocument();
+  expect(await screen.findByText('Division:')).toBeInTheDocument();
+  expect(await screen.findByText('Pacific')).toBeInTheDocument();
+});
 
-  it('Tests if clicking the close button hides the component', async () => {
-    const user = userEvent.setup();
-    render(
-      <MemoryRouter>
-        <DataContext.Provider value={mockApiData}>
-          <SearchOutput />
-        </DataContext.Provider>
-      </MemoryRouter>
-    );
-    waitFor(async () => {
-      await user.click(screen.getByText('Stephen Curry'));
-      expect(screen.getByTestId('details')).toBeInTheDocument();
-      await user.click(screen.getByTestId('details-button'));
-      expect(screen.getByTestId('details')).not.toBeInTheDocument();
-    });
-  });
+test('Tests if clicking the close button hides the component', async () => {
+  const user = userEvent.setup();
+  renderWithProviders(<App />);
+  await user.click(await screen.findByText('Stephen Curry'));
+  expect(await screen.findByTestId('details')).toBeInTheDocument();
+  await user.click(await screen.findByTestId('details-button'));
+  expect(screen.queryByTestId('details')).toBeNull();
 });
