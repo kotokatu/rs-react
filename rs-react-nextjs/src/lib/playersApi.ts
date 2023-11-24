@@ -32,6 +32,12 @@ export interface Item {
   };
 }
 
+export type QueryParams = {
+  search: string | string[] | null;
+  page: string | string[] | null;
+  limit: string | string[] | null;
+};
+
 export const nbaApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl }),
@@ -41,20 +47,20 @@ export const nbaApi = createApi({
     }
   },
   endpoints: (builder) => ({
-    getPlayers: builder.query<ApiResponse, { searchValue: string; page: number; limit: number }>({
+    getPlayers: builder.query<ApiResponse, QueryParams>({
       query: (args) => {
-        const { searchValue, page, limit } = args;
+        const { search, page, limit } = args;
         return {
           url: "/players",
           params: {
-            search: searchValue,
-            page: page.toString(),
-            per_page: limit.toString(),
+            search,
+            page,
+            per_page: limit,
           },
         };
       },
     }),
-    getPlayer: builder.query<Item, string>({
+    getPlayer: builder.query<Item, string | string[]>({
       query: (id) => {
         return {
           url: `/players/${id}`,
