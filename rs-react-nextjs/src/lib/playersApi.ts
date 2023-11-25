@@ -32,11 +32,11 @@ export interface Item {
   };
 }
 
-export type QueryParams = {
+export interface QueryParams {
   search: string | string[] | null;
   page: string | string[] | null;
   limit: string | string[] | null;
-};
+}
 
 export const nbaApi = createApi({
   reducerPath: "api",

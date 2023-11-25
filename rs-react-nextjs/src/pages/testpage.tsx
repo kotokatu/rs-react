@@ -12,6 +12,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
       limit: limit || DEFAULT_ITEMS_PER_PAGE,
     })
   );
+
   if (details) store.dispatch(getPlayer.initiate(details));
   await Promise.all(store.dispatch(getRunningQueriesThunk()));
   return {
@@ -22,7 +23,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
 export default function Players() {
   return (
     <>
-      <Search />;
+      <Search />
     </>
   );
 }

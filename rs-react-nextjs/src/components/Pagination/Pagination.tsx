@@ -8,12 +8,13 @@ export default function Pagination() {
   const search = searchParams.get("search") || "";
   const page = searchParams.get("page") || "1";
   const limit = searchParams.get("limit") || "10";
+  const params = new URLSearchParams(searchParams);
 
   const { data } = useGetPlayersQuery({ search, page, limit });
 
   const paginate = (page: number) => {
-    const params = new URLSearchParams(searchParams);
     params.set("page", page.toString());
+    params.delete("details");
     router.push(`${pathname}?${params.toString()}`);
   };
 
@@ -36,13 +37,13 @@ export default function Pagination() {
       <button disabled={page === data?.meta.total_pages.toString()} onClick={() => paginate(data.meta.total_pages)}>
         &gt;&gt;
       </button>
-      {/* <select
+      <select
         className="pagination-select"
         name="page-select"
         id="page-select"
-        value={perPage}
+        defaultValue={searchParams.get("limit")?.toString()}
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-          dispatch(setPerPage(+e.target.value));
+          params.set("limit", e.target.value);
           paginate(1);
         }}
       >
@@ -51,7 +52,7 @@ export default function Pagination() {
             {value}
           </option>
         ))}
-      </select> */}
+      </select>
     </div>
   ) : null;
 }
