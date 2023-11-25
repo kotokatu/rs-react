@@ -8,7 +8,6 @@ function SearchOutput() {
   const search = searchParams.get("search") || "";
   const page = searchParams.get("page") || "1";
   const limit = searchParams.get("limit") || "10";
-  const details = searchParams.get("details");
 
   const { data } = useGetPlayersQuery({ search, page, limit });
 
@@ -21,7 +20,7 @@ function SearchOutput() {
               return <OutputItem item={item} key={item.id} />;
             })}
           </ul>
-          {!!details && <Details />}
+          {!!searchParams.get("details") && <Details />}
         </>
       ) : (
         <div className="output-empty">Nothing found</div>

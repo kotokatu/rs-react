@@ -20,10 +20,6 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
   };
 });
 
-export default function Players() {
-  return (
-    <>
-      <Search />
-    </>
-  );
+export default function Page() {
+  return <Search />;
 }
