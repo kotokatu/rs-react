@@ -1,5 +1,5 @@
-import { FormEvent } from "react";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { FormEvent } from 'react';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 function SearchInput() {
   const searchParams = useSearchParams();
@@ -10,11 +10,11 @@ function SearchInput() {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
-    const searchValue = formData.get("search") as string;
+    const searchValue = formData.get('search') as string;
     const params = new URLSearchParams(searchParams);
-    params.set("search", searchValue);
-    params.set("page", "1");
-    params.delete("details");
+    params.set('search', searchValue);
+    params.set('page', '1');
+    params.delete('details');
     router.push(`${pathname}?${params.toString()}`);
   };
 
@@ -25,7 +25,7 @@ function SearchInput() {
         data-testid="input-search"
         type="text"
         name="search"
-        defaultValue={searchParams.get("search")?.toString()}
+        defaultValue={searchParams.get('search')?.toString()}
       />
       <button type="submit" data-testid="button-search">
         Search

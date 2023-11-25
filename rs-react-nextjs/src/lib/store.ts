@@ -1,6 +1,6 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { createWrapper } from "next-redux-wrapper";
-import { nbaApi } from "./playersApi";
+import { configureStore } from '@reduxjs/toolkit';
+import { createWrapper } from 'next-redux-wrapper';
+import { nbaApi } from './playersApi';
 export const setupStore = () => {
   return configureStore({
     reducer: {
@@ -11,7 +11,7 @@ export const setupStore = () => {
 };
 
 export type AppStore = ReturnType<typeof setupStore>;
-export type RootState = ReturnType<AppStore["getState"]>;
-export type AppDispatch = AppStore["dispatch"];
+export type RootState = ReturnType<AppStore['getState']>;
+export type AppDispatch = AppStore['dispatch'];
 
 export const wrapper = createWrapper<AppStore>(setupStore);

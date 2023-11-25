@@ -1,6 +1,6 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "@/constants/constants";
-import { HYDRATE } from "next-redux-wrapper";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { baseUrl } from '@/constants/constants';
+import { HYDRATE } from 'next-redux-wrapper';
 
 export interface ApiResponse {
   data: Item[];
@@ -39,7 +39,7 @@ export interface QueryParams {
 }
 
 export const nbaApi = createApi({
-  reducerPath: "api",
+  reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl }),
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === HYDRATE) {
@@ -51,7 +51,7 @@ export const nbaApi = createApi({
       query: (args) => {
         const { search, page, limit } = args;
         return {
-          url: "/players",
+          url: '/players',
           params: {
             search,
             page,
