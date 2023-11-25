@@ -16,9 +16,12 @@
     "start": "next start",
     "lint": "next lint",
     "format:fix": "prettier . --write",
-    "prepare": "husky install",
-    "test": "vitest --run",
-    "coverage": "vitest run --coverage"
+    "prepare": "husky install"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
@@ -28,14 +31,13 @@
     "react-dom": "^18"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "typescript": "^5",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.1.0",
     "@testing-library/user-event": "^14.5.1",
     "@types/jest": "^29.5.8",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
@@ -52,6 +54,6 @@
     "lint-staged": "^15.0.2",
     "msw": "^2.0.5",
     "prettier": "^3.0.3",
-    "vitest": "^0.34.6"
+    "typescript": "^5"
   }
 }
