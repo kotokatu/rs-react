@@ -1,6 +1,4 @@
 import { screen, within, render } from '@testing-library/react';
-import { HttpResponse, http } from 'msw';
-import { server } from './test-utils/server';
 import { emptyApiData, mockApiData } from './mocks/mockData';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
 import { createMockRouter } from './test-utils/createMockRouter';

@@ -1,23 +1,24 @@
 import { vi } from 'vitest';
-import { screen, render } from '@testing-library/react';
+import { screen, render, getByTestId } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
-import { createMockRouter } from './test-utils/createMockRouter';
 import Home from '@/pages';
-import { mockApiData } from './mocks/mockData';
-import { makeStore } from '@/lib/store';
+import { getServerSideProps } from '@/pages';
+import { gsspCtx, assertHasProps, setupMockServer } from './test-utils/utils';
+import mockRouter from 'next-router-mock';
+import { handlers } from './test-utils/handlers';
 
-const store = makeStore();
-
+vi.mock('next/router', async () => await vi.importActual('next-router-mock'));
+const server = setupMockServer(...handlers);
 const user = userEvent.setup();
 
+afterEach(() => {
+  mockRouter.push('/');
+});
+
 test('Ensures that the card component renders the relevant card data', async () => {
-  const router = createMockRouter({});
-  render(
-    <RouterContext.Provider value={router}>
-      <Home playersData={mockApiData} playerData={null} />
-    </RouterContext.Provider>
-  );
+  const res = await getServerSideProps(gsspCtx({ query: { details: '2' } }));
+  assertHasProps(res);
+  render(<Home {...res.props} />);
   const items = await screen.findAllByRole('listitem');
   expect(items[0].textContent).toBe('LeBron James');
   expect(items[1].textContent).toBe('Stephen Curry');
@@ -25,12 +26,17 @@ test('Ensures that the card component renders the relevant card data', async () 
 });
 
 test('Validates that clicking on a card adds a "details" query parameter to URL', async () => {
-  const router = createMockRouter({});
-  render(
-    <RouterContext.Provider value={router}>
-      <Home playersData={mockApiData} playerData={null} />
-    </RouterContext.Provider>
-  );
+  const res = await getServerSideProps(gsspCtx({ query: { details: '2' } }));
+  assertHasProps(res);
+  render(<Home {...res.props} />);
   await user.click(await screen.findByText('Stephen Curry'));
-  expect(router.push).toHaveBeenCalledWith({ query: { details: 2 } });
+  expect(mockRouter).toMatchObject({ query: { details: 2 } });
+});
+
+test('Validates that clicking on a card opens Details', async () => {
+  const res = await getServerSideProps(gsspCtx({ query: { details: '2' } }));
+  assertHasProps(res);
+  render(<Home {...res.props} />);
+  await user.click(await screen.findByText('Stephen Curry'));
+  expect(screen.getByTestId('details')).toBeInTheDocument();
 });

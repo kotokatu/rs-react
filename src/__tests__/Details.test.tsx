@@ -1,19 +1,24 @@
-import { screen, render } from '@testing-library/react';
-import Details from '@/components/Details/Details';
-import { mockApiData } from './mocks/mockData';
+import { screen, render, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
-import { createMockRouter } from './test-utils/createMockRouter';
-import SearchOutput from '@/components/SearchOutput/SearchOutput';
+import { handlers } from './test-utils/handlers';
+import { gsspCtx, assertHasProps, setupMockServer } from './test-utils/utils';
+import { getServerSideProps } from '@/pages';
+import Home from '@/pages';
+import mockRouter from 'next-router-mock';
+
+vi.mock('next/router', async () => await vi.importActual('next-router-mock'));
+const server = setupMockServer(...handlers);
+
+afterEach(() => {
+  mockRouter.push('/');
+});
 
 describe('Details', () => {
   it('Tests if the card details component correctly displays the detailed card data', async () => {
-    const router = createMockRouter({ query: { details: '2' } });
-    render(
-      <RouterContext.Provider value={router}>
-        <Details data={mockApiData.data[1]} />
-      </RouterContext.Provider>
-    );
+    mockRouter.push({ query: { details: '2' } });
+    const res = await getServerSideProps(gsspCtx({ query: { details: '2' } }));
+    assertHasProps(res);
+    render(<Home {...res.props} />);
     expect(await screen.findByText('Height (ft):')).toBeInTheDocument();
     expect(await screen.findByText('6')).toBeInTheDocument();
     expect(await screen.findByText('Height (in):')).toBeInTheDocument();
@@ -33,47 +38,25 @@ describe('Details', () => {
     expect(await screen.findByText('Pacific')).toBeInTheDocument();
   });
 
-  it('Tests that the details are not open when there is no "details" query parameter in the URL', () => {
-    const router = createMockRouter({ query: { details: '2' } });
-    render(
-      <RouterContext.Provider value={router}>
-        <SearchOutput
-          playersData={mockApiData}
-          playerData={mockApiData.data[1]}
-        />
-      </RouterContext.Provider>
-    );
-    expect(router.query.details).toEqual('2');
-    expect(screen.getByTestId('details')).toBeInTheDocument();
-  });
-  it('Tests that the details are open when a valid "details" query parameter is present in the URL', () => {
-    const router = createMockRouter({ pathname: '/' });
-    render(
-      <RouterContext.Provider value={router}>
-        <SearchOutput
-          playersData={mockApiData}
-          playerData={mockApiData.data[1]}
-        />
-      </RouterContext.Provider>
-    );
-    expect(router.query.details).toBeUndefined();
-    expect(screen.queryByTestId('details')).toBeNull();
-  });
-
   it('Tests if clicking the close button in Details updates the URL params', async () => {
     const user = userEvent.setup();
-    const router = createMockRouter({ query: { details: '2' } });
-    render(
-      <RouterContext.Provider value={router}>
-        <SearchOutput
-          playersData={mockApiData}
-          playerData={mockApiData.data[1]}
-        />
-      </RouterContext.Provider>
-    );
-    expect(router.query.details).toEqual('2');
+    mockRouter.push({ query: { details: '2' } });
+    const res = await getServerSideProps(gsspCtx({ query: { details: '2' } }));
+    assertHasProps(res);
+    render(<Home {...res.props} />);
+    expect(mockRouter.query.details).toEqual('2');
     await user.click(await screen.findByTestId('details-button'));
-    expect(router.push).toHaveBeenCalled();
-    expect(router.query.details).toBeUndefined();
+    expect(mockRouter.query.details).toBeUndefined();
+  });
+
+  test('Tests if clicking the close button closes Details', async () => {
+    const user = userEvent.setup();
+    mockRouter.push({ query: { details: '2' } });
+    const res = await getServerSideProps(gsspCtx({ query: { details: '2' } }));
+    assertHasProps(res);
+    render(<Home {...res.props} />);
+    expect(screen.getByTestId('details')).toBeInTheDocument();
+    await user.click(await screen.findByTestId('details-button'));
+    expect(screen.queryByTestId('details')).toBeNull();
   });
 });
