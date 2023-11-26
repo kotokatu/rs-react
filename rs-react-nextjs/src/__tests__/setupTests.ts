@@ -1,15 +1,6 @@
 import '@testing-library/jest-dom/vitest';
-import { server } from './mocks/server.js';
-import { apiSlice } from '../../../old/src/features/api/apiSlice.js';
-import { setupStore } from '../../../old/src/store/store.js';
-
-const store = setupStore({});
+import { beforeAll, vi } from 'vitest';
 
 beforeAll(() => {
-  server.listen();
+  vi.mock('next/router', () => require('next-router-mock'));
 });
-afterEach(() => {
-  server.resetHandlers();
-  store.dispatch(apiSlice.util.resetApiState());
-});
-afterAll(() => server.close());

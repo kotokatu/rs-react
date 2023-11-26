@@ -1,4 +1,4 @@
-import type { ApiResponse } from '../../../../old/src/features/api/apiSlice';
+import type { ApiResponse } from '@/lib/nbaApi';
 
 export const mockApiData: ApiResponse = {
   data: [

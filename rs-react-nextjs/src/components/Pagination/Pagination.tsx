@@ -1,21 +1,21 @@
-import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import { useGetPlayersQuery } from '@/lib/playersApi';
+import { useRouter } from 'next/router';
+import { useGetPlayersQuery } from '@/lib/nbaApi';
+import {
+  DEFAULT_ITEMS_PER_PAGE,
+  DEFAULT_PAGE_NUMBER,
+} from '@/constants/constants';
 export default function Pagination() {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
+  const { push, query } = useRouter();
 
-  const search = searchParams.get('search') || '';
-  const page = searchParams.get('page') || '1';
-  const limit = searchParams.get('limit') || '10';
-  const params = new URLSearchParams(searchParams);
+  const search = query.search || '';
+  const page = query.page || DEFAULT_PAGE_NUMBER;
+  const limit = query.limit || DEFAULT_ITEMS_PER_PAGE;
 
-  const { data } = useGetPlayersQuery({ search, page, limit });
+  // const { data } = useGetPlayersQuery({ search, page, limit });
 
   const paginate = (page: number) => {
-    params.set('page', page.toString());
-    params.delete('details');
-    router.push(`${pathname}?${params.toString()}`);
+    delete query.details;
+    push({ query: { ...query, page } });
   };
 
   return data?.meta.total_pages ? (
@@ -44,10 +44,17 @@ export default function Pagination() {
         className="pagination-select"
         name="page-select"
         id="page-select"
-        defaultValue={searchParams.get('limit')?.toString()}
+        data-testid="select"
+        defaultValue={query.limit}
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-          params.set('limit', e.target.value);
-          paginate(1);
+          delete query.details;
+          push({
+            query: {
+              ...query,
+              page: DEFAULT_PAGE_NUMBER,
+              limit: e.target.value,
+            },
+          });
         }}
       >
         {[10, 15, 20, 25].map((value) => (

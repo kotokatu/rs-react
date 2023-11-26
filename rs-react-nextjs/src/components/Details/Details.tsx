@@ -1,11 +1,9 @@
-import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import { useGetPlayerQuery } from '@/lib/playersApi';
+import { useRouter } from 'next/router';
+import { useGetPlayerQuery } from '@/lib/nbaApi';
 function Details() {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
-  const id = searchParams.get('details') as string;
-  const { data } = useGetPlayerQuery(id);
+  const { push, query } = useRouter();
+  const id = query.details as string;
+  // const { data } = useGetPlayerQuery(id);
 
   return (
     data && (
@@ -46,9 +44,8 @@ function Details() {
           className="details-button"
           data-testid="details-button"
           onClick={() => {
-            const params = new URLSearchParams(searchParams);
-            params.delete('details');
-            router.push(`${pathname}?${params.toString()}`);
+            delete query.details;
+            push({ query: { ...query } });
           }}
         >
           X

@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { baseUrl } from '@/constants/constants';
 import { HYDRATE } from 'next-redux-wrapper';
+import { setPlayers, setPlayer } from './dataSlice';
 
 export interface ApiResponse {
   data: Item[];
@@ -59,12 +60,20 @@ export const nbaApi = createApi({
           },
         };
       },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        const { data } = await queryFulfilled;
+        dispatch(setPlayers(data));
+      },
     }),
     getPlayer: builder.query<Item, string | string[]>({
       query: (id) => {
         return {
           url: `/players/${id}`,
         };
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        const { data } = await queryFulfilled;
+        dispatch(setPlayer(data));
       },
     }),
   }),

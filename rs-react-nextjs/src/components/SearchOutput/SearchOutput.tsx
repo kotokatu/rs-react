@@ -1,15 +1,20 @@
-import { useSearchParams } from 'next/navigation';
-import { useGetPlayersQuery } from '@/lib/playersApi';
+import { useRouter } from 'next/router';
+import { useGetPlayersQuery } from '@/lib/nbaApi';
 import OutputItem from '../OutputItem/OutputItem';
 import Details from '../Details/Details';
-import type { Item } from '@/lib/playersApi';
-function SearchOutput() {
-  const searchParams = useSearchParams();
-  const search = searchParams.get('search') || '';
-  const page = searchParams.get('page') || '1';
-  const limit = searchParams.get('limit') || '10';
+import type { Item } from '@/lib/nbaApi';
+import {
+  DEFAULT_ITEMS_PER_PAGE,
+  DEFAULT_PAGE_NUMBER,
+} from '@/constants/constants';
+import type { ApiResponse } from '@/lib/nbaApi';
+function SearchOutput({ data }: { data: ApiResponse | null }) {
+  const { query } = useRouter();
+  const search = query.search || '';
+  const page = query.page || DEFAULT_PAGE_NUMBER;
+  const limit = query.limit || DEFAULT_ITEMS_PER_PAGE;
 
-  const { data } = useGetPlayersQuery({ search, page, limit });
+  // const { data } = useGetPlayersQuery({ search, page, limit });
 
   return (
     <div className="output">
@@ -20,7 +25,7 @@ function SearchOutput() {
               return <OutputItem item={item} key={item.id} />;
             })}
           </ul>
-          {!!searchParams.get('details') && <Details />}
+          {!!query.details && <Details />}
         </>
       ) : (
         <div className="output-empty">Nothing found</div>

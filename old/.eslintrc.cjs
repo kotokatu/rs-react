@@ -2,6 +2,7 @@ module.exports = {
   root: true,
   env: { browser: true, es2020: true, node: true },
   extends: [
+    "next/core-web-vitals",
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
@@ -19,7 +20,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'react-refresh'],
   rules: {
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
+    'react-hooks/exhaustive-deps': 'off',
     'comma-dangle': ['error', 'only-multiline'],
     'react/prop-types': 'off',
     'react/display-name': 'off',
