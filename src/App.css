@@ -5,38 +5,96 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+label {
+  display: block;
+  text-align: left;
+  font-family: inherit;
+  font-size: 1.2rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+input,
+select {
+  height: 2.6rem;
+  padding: 0 5px;
+  font-family: inherit;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 4px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+select option {
+  width: 100%;
+  font-size: 1.1rem;
+  border: none;
 }
 
-.card {
-  padding: 2em;
+.navigation {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
-.read-the-docs {
-  color: #888;
+.form-container {
+  margin: 0 auto;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-container {
+  padding: 5px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-container__tc {
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.input-container__country {
+  position: relative;
+}
+
+input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+}
+
+.countries-list {
+  position: absolute;
+  display: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  left: 0;
+  top: 100%;
+  max-height: 20em;
+  border: 0 none;
+  border-radius: 4px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 9999;
+}
+
+.countries-list.show {
+  display: block;
+}
+
+.countries-list li {
+  margin: 0;
+  list-style: none;
+  font-size: 0.8em;
+  padding: 0.3em 1em;
+  background-color: #ccc;
+  cursor: pointer;
+}
+
+.countries-list li:hover,
+.countries-list li:focus {
+  color: #fff;
+  background-color: #036;
+  outline: 0 none;
 }
