@@ -1,7 +1,8 @@
 import { useAppDispatch } from '../../hooks/hooks';
 import { useRef } from 'react';
-import { updateValues } from '../../features/mainSlice';
+import { updateHistory } from '../../features/mainSlice';
 import { useNavigate } from 'react-router-dom';
+import { convertToBase64 } from '../../helpers/helpers';
 import Autocomplete from '../Autocomplete/Autocomplete';
 const UncontrolledForm = () => {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -19,11 +20,15 @@ const UncontrolledForm = () => {
     <>
       <h1>Uncontrolled Form</h1>
       <form
+        autoComplete="off"
         className="form-container"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
+          const file = imageRef.current?.files?.[0];
+          let base64;
+          if (file) base64 = await convertToBase64(file);
           dispatch(
-            updateValues({
+            updateHistory({
               name: nameRef.current?.value || '',
               age: ageRef.current?.value || '',
               password: passwordRef.current?.value || '',
@@ -31,7 +36,7 @@ const UncontrolledForm = () => {
               email: emailRef.current?.value || '',
               gender: genderRef.current?.value || '',
               tc: tcRef.current?.checked || false,
-              image: imageRef.current?.value || '',
+              image: base64 || null,
               country: countryRef.current?.value || '',
             })
           );
@@ -78,7 +83,7 @@ const UncontrolledForm = () => {
           <input
             type="file"
             id="image"
-            name="image"
+            ref={imageRef}
             accept="image/png, image/jpeg"
           />
         </div>

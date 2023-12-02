@@ -5,6 +5,10 @@
   text-align: center;
 }
 
+img {
+  max-width: 100%;
+}
+
 label {
   display: block;
   text-align: left;
@@ -86,9 +90,10 @@ input[type='checkbox'] {
 .countries-list li {
   margin: 0;
   list-style: none;
-  font-size: 0.8em;
+  font-size: 1rem;
   padding: 0.3em 1em;
   background-color: #ccc;
+  color: rgb(58, 58, 58);
   cursor: pointer;
 }
 
@@ -97,4 +102,56 @@ input[type='checkbox'] {
   color: #fff;
   background-color: #036;
   outline: 0 none;
+}
+
+.output-container {
+  margin: 0 auto 5px;
+  max-width: 320px;
+  border: 4px solid grey;
+}
+
+.output-image {
+  margin: 0 auto;
+  max-width: 100px;
+  max-height: 100px;
+}
+
+.blink {
+  animation: blink 1s;
+}
+
+@keyframes blink {
+  0% {
+    border-color: grey;
+  }
+  10% {
+    border-color: green;
+  }
+  20% {
+    border-color: grey;
+  }
+  30% {
+    border-color: green;
+  }
+  40% {
+    border-color: grey;
+  }
+  50% {
+    border-color: green;
+  }
+  60% {
+    border-color: grey;
+  }
+  70% {
+    border-color: green;
+  }
+  80% {
+    border-color: grey;
+  }
+  90% {
+    border-color: green;
+  }
+  100% {
+    border-color: grey;
+  }
 }

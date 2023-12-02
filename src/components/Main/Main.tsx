@@ -1,22 +1,36 @@
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/hooks';
+import { v4 as uuidv4 } from 'uuid';
 const Main = () => {
-  const { name, age, password, confirmPassword, tc, gender, image, country } =
-    useAppSelector((state) => state.main);
+  const { history } = useAppSelector((state) => state.main);
   return (
     <main className="main">
       <nav className="navigation">
         <Link to="uncontrolled">Uncontrolled Form</Link>
         <Link to="controlled">React Hook Form</Link>
       </nav>
-      <div>{name}</div>
-      <div>{age}</div>
-      <div>{password}</div>
-      <div>{confirmPassword}</div>
-      <div>{tc ? 'T&C accepted' : 'T&C not accepted'}</div>
-      <div>{gender}</div>
-      <div>{image}</div>
-      <div>{country}</div>
+      {history.map((item, index) => {
+        return (
+          item && (
+            <div
+              className={`output-container ${index === 0 ? 'blink' : ''}`}
+              key={uuidv4()}
+            >
+              <div className="output-name">Name: {item.name}</div>
+              <div className="output-age">Age: {item.age}</div>
+              <div className="output-password">Password: {item.password}</div>
+              <div className="output-gender">Gender: {item.gender}</div>
+              <div className="output-country">Country: {item.country}</div>
+              <div className="output-tc">
+                Terms & Conditions: {item.tc ? 'accepted' : 'not accepted'}
+              </div>
+              <div className="output-image">
+                {typeof item.image === 'string' && <img src={item.image} />}
+              </div>
+            </div>
+          )
+        );
+      })}
     </main>
   );
 };
