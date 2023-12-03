@@ -8,7 +8,6 @@ import { ValidationError } from 'yup';
 import CustomAutocomplete from '../CustomAutocomplete/CustomAutocomplete';
 import type { FormFields } from '../../features/mainSlice';
 import { schema } from '../../utils/validationSchema';
-// import Autocomplete from '../Autocomplete/Autocomplete';
 
 const UncontrolledForm = () => {
   const [validationErrors, setValidationErrors] = useState<ErrorObject>({});
@@ -109,7 +108,6 @@ const UncontrolledForm = () => {
           </select>
           <p className="error">{validationErrors?.gender?.[0]}</p>
         </div>
-        {/* <Autocomplete ref={countryRef} /> */}
         <CustomAutocomplete ref={countryRef} />
         <p className="error">{validationErrors?.country}</p>
         <div className="input-container input-container__image">

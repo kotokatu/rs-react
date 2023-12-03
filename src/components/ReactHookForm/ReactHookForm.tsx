@@ -3,7 +3,6 @@ import { updateHistory } from '../../features/mainSlice';
 import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { convertToBase64 } from '../../utils/helpers';
-// import Autocomplete from '../Autocomplete/Autocomplete';
 import CustomAutocomplete from '../CustomAutocomplete/CustomAutocomplete';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -90,13 +89,6 @@ const FormWithReactHookForm = () => {
           </select>
           <p className="error">{errors.gender?.message}</p>
         </div>
-        {/* <Controller
-          control={control}
-          name="country"
-          render={({ field: { onChange, value } }) => (
-            <Autocomplete onChange={onChange} value={value} />
-          )}
-        /> */}
         <Controller
           control={control}
           name="country"
