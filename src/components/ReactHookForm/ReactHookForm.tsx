@@ -3,7 +3,7 @@ import { updateHistory } from '../../features/mainSlice';
 import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { convertToBase64 } from '../../utils/helpers';
-import CustomAutocomplete from '../CustomAutocomplete/CustomAutocomplete';
+import Autocomplete from '../Autocomplete/Autocomplete';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from '../../utils/validationSchema';
@@ -60,7 +60,14 @@ const FormWithReactHookForm = () => {
           <label htmlFor="password">Password</label>
           <input type="password" id="password" {...register('password')} />
           <ul className="error-list__password">
-            <li className="error__password">{errors.password?.message}</li>
+            {errors.password?.type !== 'matches' && (
+              <li className="error__password">{errors.password?.message}</li>
+            )}
+            {typeof errors.password?.types?.matches === 'string' && (
+              <li className="error__password">
+                {errors.password?.types?.matches}
+              </li>
+            )}
             {Array.isArray(errors.password?.types?.matches) &&
               errors.password?.types?.matches.map((message) => {
                 return (
@@ -93,7 +100,7 @@ const FormWithReactHookForm = () => {
           control={control}
           name="country"
           render={({ field: { onChange } }) => (
-            <CustomAutocomplete onChange={onChange} setValue={setValue} />
+            <Autocomplete onChange={onChange} setValue={setValue} />
           )}
         />
         {errors.country?.message && (

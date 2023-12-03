@@ -9,7 +9,7 @@ interface AutocompleteProps
   setValue?: UseFormSetValue<FieldData>;
 }
 
-const CustomAutocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
+const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
   ({ onChange, setValue }, ref) => {
     const [innerValue, setInnerValue] = useState('');
     const [showList, setShowList] = useState(false);
@@ -70,4 +70,4 @@ const CustomAutocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
   }
 );
 
-export default CustomAutocomplete;
+export default Autocomplete;

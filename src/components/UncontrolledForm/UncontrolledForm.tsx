@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { getYupErrorObject, ErrorObject } from '../../utils/helpers';
 import { convertToBase64 } from '../../utils/helpers';
 import { ValidationError } from 'yup';
-import CustomAutocomplete from '../CustomAutocomplete/CustomAutocomplete';
+import Autocomplete from '../Autocomplete/Autocomplete';
 import type { FormFields } from '../../features/mainSlice';
 import { schema } from '../../utils/validationSchema';
 
@@ -108,7 +108,7 @@ const UncontrolledForm = () => {
           </select>
           <p className="error">{validationErrors?.gender?.[0]}</p>
         </div>
-        <CustomAutocomplete ref={countryRef} />
+        <Autocomplete ref={countryRef} />
         <p className="error">{validationErrors?.country}</p>
         <div className="input-container input-container__image">
           <label htmlFor="image">Upload image</label>

@@ -29,7 +29,7 @@ export const schema = yup
     password: yup
       .string()
       .required('Password cannot be empty')
-      .matches(/.{8}/, 'Must contain 8 characters')
+      .matches(/.{8,}/, 'Must be >= 8 characters')
       .matches(/^(?=.*[a-z])/, 'Must contain a lowercase character')
       .matches(/^(?=.*[A-Z])/, 'Must contain an uppercase character')
       .matches(/^(?=.*[0-9])/, 'Must contain a number')
