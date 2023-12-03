@@ -1,8 +1,8 @@
 import { useState, forwardRef } from 'react';
-import { COUNTRIES_LIST } from '../../features/countriesSlice';
 import { UseFormSetValue } from 'react-hook-form';
 import { FieldData } from '../ReactHookForm/ReactHookForm';
 import { useOutsideClick } from '../../hooks/useOutsideClick';
+import { useAppSelector } from '../../hooks/hooks';
 
 interface AutocompleteProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -13,9 +13,10 @@ const CustomAutocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
   ({ onChange, setValue }, ref) => {
     const [innerValue, setInnerValue] = useState('');
     const [showList, setShowList] = useState(false);
+    const { countries } = useAppSelector((state) => state.main);
     const outsideClickRef = useOutsideClick(() => setShowList(false));
 
-    const filteredCountries = COUNTRIES_LIST.filter((country) =>
+    const filteredCountries = countries.filter((country) =>
       country.toLowerCase().includes(innerValue.toLowerCase())
     );
 

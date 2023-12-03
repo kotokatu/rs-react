@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { COUNTRIES_LIST } from './countriesSlice';
 
 export type FormFields = {
   name: string;
@@ -14,10 +15,12 @@ export type FormFields = {
 
 type MainState = {
   history: FormFields[];
+  countries: string[];
 };
 
 const initialState: MainState = {
   history: [null],
+  countries: COUNTRIES_LIST,
 };
 
 const mainSlice = createSlice({
