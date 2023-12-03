@@ -1,13 +1,13 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-type FormFields = {
+export type FormFields = {
   name: string;
-  age: string;
+  age: number;
   email: string;
   password: string;
   confirmPassword: string;
   tc: boolean;
-  gender: string;
+  gender: string | undefined;
   image: string | ArrayBuffer | null;
   country: string;
 } | null;

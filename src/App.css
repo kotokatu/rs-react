@@ -6,7 +6,9 @@
 }
 
 img {
-  max-width: 100%;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
 }
 
 label {
@@ -32,6 +34,10 @@ select option {
   border: none;
 }
 
+select :disabled {
+  color: rgba(173, 22, 22, 0.5);
+}
+
 .navigation {
   margin: 0 auto;
   display: flex;
@@ -41,18 +47,19 @@ select option {
 
 .form-container {
   margin: 0 auto;
-  max-width: 400px;
+  max-width: 450px;
   display: flex;
   flex-direction: column;
 }
 
 .input-container {
-  padding: 5px 0;
+  padding: 0 0 5px;
   display: flex;
   flex-direction: column;
 }
 
-.input-container__tc {
+.input-container__tc-wrapper {
+  display: flex;
   flex-direction: row;
   align-items: center;
   gap: 5px;
@@ -112,8 +119,8 @@ input[type='checkbox'] {
 
 .output-image {
   margin: 0 auto;
-  max-width: 100px;
-  max-height: 100px;
+  width: 100px;
+  height: 100px;
 }
 
 .blink {
@@ -154,4 +161,28 @@ input[type='checkbox'] {
   100% {
     border-color: grey;
   }
+}
+
+.error,
+.error__password {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  color: rgb(175, 53, 53);
+}
+
+.error {
+  height: 1.2rem;
+}
+
+.error__password {
+  text-align: left;
+}
+.error-list__password {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 55px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }

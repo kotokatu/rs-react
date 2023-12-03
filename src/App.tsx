@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
 import Main from './components/Main/Main';
 import UncontrolledForm from './components/UncontrolledForm/UncontrolledForm';
-import ReactHookForm from './components/ReactHookForm/ReactHookForm';
+import FormWithReactHookForm from './components/ReactHookForm/ReactHookForm';
 import Fallback from './components/Fallback/Fallback';
 
 const router = createBrowserRouter([
@@ -16,8 +16,8 @@ const router = createBrowserRouter([
     element: <UncontrolledForm />,
   },
   {
-    path: 'controlled',
-    element: <ReactHookForm />,
+    path: 'with-react-hook-form',
+    element: <FormWithReactHookForm />,
   },
 ]);
 
