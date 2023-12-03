@@ -34,7 +34,7 @@ export const schema = yup
       .matches(/^(?=.*[a-z])/, 'Must contain a lowercase character')
       .matches(/^(?=.*[A-Z])/, 'Must contain an uppercase character')
       .matches(/^(?=.*[0-9])/, 'Must contain a number')
-      .matches(SPECIAL_CHARS_REGEX, 'Must contain a special case character')
+      .matches(SPECIAL_CHARS_REGEX, 'Must contain a special character')
       .matches(/^\S*$/, 'Must not contain spaces'),
     confirmPassword: yup
       .string()
