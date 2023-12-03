@@ -1,0 +1,188 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+label {
+  display: block;
+  text-align: left;
+  font-family: inherit;
+  font-size: 1.2rem;
+}
+
+input,
+select {
+  height: 2.6rem;
+  padding: 0 5px;
+  font-family: inherit;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 4px;
+}
+
+select option {
+  width: 100%;
+  font-size: 1.1rem;
+  border: none;
+}
+
+select :disabled {
+  color: rgba(173, 22, 22, 0.5);
+}
+
+.navigation {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.form-container {
+  margin: 0 auto;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-container {
+  padding: 0 0 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-container__tc-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.input-container__country {
+  position: relative;
+}
+
+input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+}
+
+.countries-list {
+  position: absolute;
+  display: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  left: 0;
+  top: 100%;
+  max-height: 20em;
+  border: 0 none;
+  border-radius: 4px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 9999;
+}
+
+.countries-list.show {
+  display: block;
+}
+
+.countries-list li {
+  margin: 0;
+  list-style: none;
+  font-size: 1rem;
+  padding: 0.3em 1em;
+  background-color: #ccc;
+  color: rgb(58, 58, 58);
+  cursor: pointer;
+}
+
+.countries-list li:hover,
+.countries-list li:focus {
+  color: #fff;
+  background-color: #036;
+  outline: 0 none;
+}
+
+.output-container {
+  margin: 0 auto 5px;
+  max-width: 320px;
+  border: 4px solid grey;
+}
+
+.output-image {
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
+}
+
+.blink {
+  animation: blink 1s;
+}
+
+@keyframes blink {
+  0% {
+    border-color: grey;
+  }
+  10% {
+    border-color: green;
+  }
+  20% {
+    border-color: grey;
+  }
+  30% {
+    border-color: green;
+  }
+  40% {
+    border-color: grey;
+  }
+  50% {
+    border-color: green;
+  }
+  60% {
+    border-color: grey;
+  }
+  70% {
+    border-color: green;
+  }
+  80% {
+    border-color: grey;
+  }
+  90% {
+    border-color: green;
+  }
+  100% {
+    border-color: grey;
+  }
+}
+
+.error,
+.error__password {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  color: rgb(175, 53, 53);
+}
+
+.error {
+  height: 1.2rem;
+}
+
+.error__password {
+  text-align: left;
+}
+.error-list__password {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 55px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
