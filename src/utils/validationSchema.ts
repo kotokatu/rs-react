@@ -4,6 +4,7 @@ import {
   EMAIL_REGEX,
   VALID_FILE_SIZE,
   VALID_FILE_TYPES,
+  SPECIAL_CHARS_REGEX,
 } from '../constants/constants';
 import { COUNTRIES_LIST } from '../features/countriesSlice';
 
@@ -29,11 +30,11 @@ export const schema = yup
     password: yup
       .string()
       .required('Password cannot be empty')
-      .matches(/.{8,}/, 'Must be >= 8 characters')
+      .matches(/.{8,}/, 'Must be at least 8 characters')
       .matches(/^(?=.*[a-z])/, 'Must contain a lowercase character')
       .matches(/^(?=.*[A-Z])/, 'Must contain an uppercase character')
       .matches(/^(?=.*[0-9])/, 'Must contain a number')
-      .matches(/^(?=.*[!@#$%^&*])/, 'Must contain a special case character')
+      .matches(SPECIAL_CHARS_REGEX, 'Must contain a special case character')
       .matches(/^\S*$/, 'Must not contain spaces'),
     confirmPassword: yup
       .string()
